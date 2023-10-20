@@ -10,8 +10,8 @@ public class Main extends PApplet{
     private ArrayList<Car> group2;
     private ArrayList<Car> group3;
     private ArrayList<Car> group4;
-    private ArrayList<Car> top;
-    private ArrayList<Car> bottom;
+    private ArrayList<Ped> people1;
+    private ArrayList<Ped> people2;
     private boolean movement;
     private boolean stopLight;
     private boolean state1;
@@ -27,164 +27,32 @@ public class Main extends PApplet{
         group4 = new ArrayList<>();
         movement = false;
         stopLight = false;
+        people1 = new ArrayList<>();
+        people2 = new ArrayList<>();
     }
 
-    public void setState1(){
-        group3.removeAll(remove3);
-        group4.removeAll(remove4);
-        for(Car c: group1){
-            c.myXspeed = -2;
-            c.myYspeed = 0;
-            c.go();
-            c.move();
-            c.show();
-        }
-        for(Car c: group2){
-            c.myXspeed = 2;
-            c.myYspeed = 0;
-            c.go();
-            c.move();
-            c.show();
-        }
-    }
 
-    public void setState2(){
-        for(Car c: group2){
-            c.move();
-            if(c.lane == 2){
-                if(c.inIntersection() && c.lane != 4){
-                    c.moveLeft2();
-                }
-            }
-            if(c.lane == 4){
-                c.myXspeed = 0;
-                c.myYspeed = -2;
-                c.oSpeedX = 0;
-                c.oSpeedY = -2;
-                c.originX = 550;
-                c.originY = 700;
-                group4.add(c);
-                break;
-            }
-            c.show();
-        }
-
-        for(Car c: group1){
-            c.move();
-            if(c.lane == 1){
-                if(c.inIntersection() && c.lane != 3){
-                    c.moveLeft2();
-                }
-            }
-            if(c.lane == 3){
-                c.myXspeed = 0;
-                c.myYspeed = 2;
-                c.oSpeedX = 0;
-                c.oSpeedY = 2;
-                c.originX = 450;
-                c.originY = 300;
-                group3.add(c);
-                break;
-            }
-            c.show();
-        }
-        for(Car c: group3){
-            c.show();
-            c.stopAtLight();
-        }
-        for(Car c: group4){
-            c.show();
-            c.stopAtLight();
-        }
-    }
-
-    public void setState3(){
-        for(Car c: group3){
-            c.go();
-            c.move();
-            c.show();
-        }
-        for(Car c: group4){
-            c.go();
-            c.move();
-            c.show();
-        }
-    }
-
-    ArrayList<Car> remove3 = new ArrayList<>();
-    ArrayList<Car> remove4 = new ArrayList<>();
-
-    public void setState4(){
-
-        for(Car c: group3){
-            c.move();
-            if(c.lane == 3){
-                if(c.inIntersection() && c.lane != 2){
-                    c.moveLeft2();
-                }
-            }
-            if(c.lane == 2){
-                c.myXspeed = 2;
-                c.myYspeed = 0;
-                c.oSpeedX = 2;
-                c.oSpeedY = 0;
-                c.originX = 300;
-                c.originY = 550;
-                group2.add(c);
-                remove3.add(c);
-                break;
-            }
-            c.show();
-        }
-
-        for(Car c: group4){
-            c.move();
-            if(c.lane == 4){
-                if(c.inIntersection() && c.lane != 1){
-                    c.moveLeft2();
-                }
-            }
-            if(c.lane == 1){
-                c.myXspeed = -2;
-                c.myYspeed = 0;
-                c.oSpeedX = -2;
-                c.oSpeedY = 0;
-                c.originX = 700;
-                c.originY = 450;
-                group1.add(c);
-                remove4.add(c);
-                break;
-            }
-            c.show();
-        }
-
-
-
-        for(Car c: group1){
-            c.show();
-            c.stopAtLight();
-        }
-        for(Car c: group2){
-            c.show();
-            c.stopAtLight();
-        }
-    }
 
     public void executeCurrentState() {
         if (state1) {
+            for(Ped p: people1){
+                if(stopLight) p.stopAtLight();
+                p.show();
+                p.move();
+            }
             for (Car c : group1) {
-                c.myXspeed = -2;
-                c.myYspeed = 0;
-                c.move();
+                if(stopLight) c.stopAtLight();
                 c.show();
+                c.move();
             }
             for (Car c : group2) {
-                c.myXspeed = 2;
-                c.myYspeed = 0;
-                c.move();
+                if(stopLight) c.stopAtLight();
                 c.show();
+                c.move();
             }
-        } else if (state2) {
+        }
+
+        else if (state2) {
             for (Car c : group2) {
                 c.move();
                 if (c.lane == 2) {
@@ -224,6 +92,7 @@ public class Main extends PApplet{
                 }
                 c.show();
             }
+
             for (Car c : group3) {
                 c.show();
                 c.stopAtLight();
@@ -232,7 +101,16 @@ public class Main extends PApplet{
                 c.show();
                 c.stopAtLight();
             }
-        } else if (state3) {
+
+
+        }
+
+        else if (state3) {
+            for(Ped p: people2){
+                if(stopLight) p.stopAtLight();
+                p.show();
+                p.move();
+            }
             for (Car c : group3) {
                 c.myXspeed = 0;
                 c.myYspeed = 2;
@@ -245,7 +123,9 @@ public class Main extends PApplet{
                 c.move();
                 c.show();
             }
-        } else if (state4) {
+        }
+
+        else if (state4) {
             for (Car c : group3) {
                 c.move();
                 if (c.lane == 3) {
@@ -261,7 +141,7 @@ public class Main extends PApplet{
                     c.originX = 300;
                     c.originY = 550;
                     group2.add(c);
-                    remove3.add(c);
+                    //remove3.add(c);
                     break;
                 }
                 c.show();
@@ -282,7 +162,7 @@ public class Main extends PApplet{
                     c.originX = 700;
                     c.originY = 450;
                     group1.add(c);
-                    remove4.add(c);
+                    //remove4.add(c);
                     break;
                 }
                 c.show();
@@ -340,13 +220,27 @@ public class Main extends PApplet{
         }
     }
 
-
-
-    public void setup(){
+    void fullReset(){
+        group1 = new ArrayList<>();
+        group2 = new ArrayList<>();
+        group3 = new ArrayList<>();
+        group4 = new ArrayList<>();
+        movement = false;
+        stopLight = false;
+        people1 = new ArrayList<>();
+        people2 = new ArrayList<>();
         group1.add(new Car(this, 700, 450, -2, 0));
         group2.add(new Car(this, 300, 550, 2, 0));
         group3.add(new Car(this, 450, 300, 0, 2));
         group4.add(new Car(this, 550, 700, 0, -2));
+        people1.add(new Ped(this, 370, 370, 2, 0));
+        people1.add(new Ped(this, 370, 630, 2, 0));
+        people2.add(new Ped(this, 370, 370, 0, 2));
+        stopLight = false;
+    }
+
+    public void setup(){
+        fullReset();
     }
 
     public void draw(){
@@ -358,41 +252,25 @@ public class Main extends PApplet{
 
         if (keyPressed) {
             if (keyCode == RIGHT) {
+                stopLight = true;
+            }
+            if (keyCode == LEFT){
+                fullReset();
                 state1 = false;
-                state2 = false;
+                state2 =false;
                 state3 = false;
                 state4 = false;
-            } else if (key == '1') {
+            }
+            else if (key == '1') {
                 state1 = true;
-                state2 = false;
-                state3 = false;
-                state4 = false;
             } else if (key == '2') {
-                state1 = false;
                 state2 = true;
-                state3 = false;
-                state4 = false;
             } else if (key == '3') {
-                state1 = false;
-                state2 = false;
                 state3 = true;
-                state4 = false;
             } else if (key == '4') {
-                state1 = false;
-                state2 = false;
-                state3 = false;
                 state4 = true;
             }
         }
-
-        System.out.println(group1.get(0).myXspeed);
-        System.out.println(group1.get(0).myYspeed);
-        System.out.println(group2.get(0).myXspeed);
-        System.out.println(group2.get(0).myYspeed);
-
-
-
-
 
     }
 

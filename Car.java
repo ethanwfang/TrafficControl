@@ -32,19 +32,13 @@ public class Car extends Floater{
 
     public void stopAtLight(){
         if(myXspeed != 0){
-            if(myCenterX < originX+2 && myCenterX > originX-2){
+            if(myCenterX < originX+5 && myCenterX > originX-5){
                 stop();
-            }
-            else{
-                go();
             }
         }
         if(myYspeed != 0){
             if(myCenterY < originY+2 && myCenterY > originY-2){
                 stop();
-            }
-            else{
-                go();
             }
         }
     }
@@ -143,7 +137,7 @@ public class Car extends Floater{
         if(lane == 4){
             myXspeed = -1.5;
             myYspeed = -1.5;
-            if(lane1()) lane =1;
+            if(lane1()) lane = 1;
         }
 
 
